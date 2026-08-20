@@ -16,7 +16,7 @@ public class invoiceServicing {
     public Invoice createInvoice(String userID, int amount) {
 
         // need to work on actual .pdf generation
-        // research how to do this
+        // research how to do this, check later
         Invoice invoice =  new Invoice(userID, amount, "http://www.griegory.com/documents/default/sample.pdf");
         invoices.add(invoice);
         return invoice;
