@@ -3,6 +3,8 @@ package com.greg;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import tools.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 
 
@@ -34,5 +36,21 @@ public class pdfInvoiceServlet extends HttpServlet {
             response.setContentType("application/json; charset=UTF-8");
             response.getWriter().print("[]");
         }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    if (request.getRequestURI().equalsIgnoreCase("/invoices")) {
+        String userID = request.getParameter("userID");
+        int amount = Integer.parseInt(request.getParameter("amount"));
+
+        Invoice invoice = new invoiceServicing().createInvoice(userID, amount);
+        response.setContentType("application/json; charset=UTF-8");
+        String json = new ObjectMapper().writeValueAsString(invoice);
+        response.getWriter().print(json);
+
+    } else {
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+    }
     }
 }
