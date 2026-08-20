@@ -1,14 +1,19 @@
-package com.greg;
+package com.greg.web;
 
+import com.greg.model.Invoice;
+import com.greg.service.invoiceServicing;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-
+import java.util.List;
 
 public class pdfInvoiceServlet extends HttpServlet {
+
+    private invoiceServicing invoiceService = new invoiceServicing();
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -34,7 +39,8 @@ public class pdfInvoiceServlet extends HttpServlet {
             );
         } else if (request.getRequestURI().equalsIgnoreCase("/invoices")) {
             response.setContentType("application/json; charset=UTF-8");
-            response.getWriter().print("[]");
+            List<Invoice> invoices =  invoiceService.getInvoices();
+            response.getWriter().print(objectMapper.writeValueAsString(invoices));
         }
     }
 
@@ -44,9 +50,9 @@ public class pdfInvoiceServlet extends HttpServlet {
         String userID = request.getParameter("userID");
         int amount = Integer.parseInt(request.getParameter("amount"));
 
-        Invoice invoice = new invoiceServicing().createInvoice(userID, amount);
+        Invoice invoice = invoiceService.createInvoice(userID, amount);
         response.setContentType("application/json; charset=UTF-8");
-        String json = new ObjectMapper().writeValueAsString(invoice);
+        String json = objectMapper.writeValueAsString(invoice);
         response.getWriter().print(json);
 
     } else {

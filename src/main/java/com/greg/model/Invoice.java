@@ -1,4 +1,4 @@
-package com.greg;
+package com.greg.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
