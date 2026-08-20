@@ -12,7 +12,7 @@ public class AppLauncher {
         tomcat.getConnector();
 
         Context context = tomcat.addContext("", null);
-        Wrapper servlet = Tomcat.addServlet(context, "myServlet", new myServlet());
+        Wrapper servlet = Tomcat.addServlet(context, "myServlet", new pdfInvoiceServlet());
         servlet.setLoadOnStartup(1);
         servlet.addMapping("/");
 
